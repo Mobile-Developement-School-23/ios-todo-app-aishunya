@@ -113,7 +113,15 @@ extension TodoItem {
         let fields = csv.components(separatedBy: ",")
         let text = fields[0]
         let id = fields[1]
-        let importance: Importance = Importance(rawValue: fields[2])!
+        
+        let importance: Importance
+        if fields[2] == "," || fields[2] == "" {
+            importance = Importance.regular
+        } else {
+            print(fields[2])
+            importance = Importance(rawValue: fields[2])!
+        }
+    
         let deadline: Date? = fields[3].isEmpty ? nil : Date(timeIntervalSince1970: Double(fields[3])!)
         let done = fields[4] == "true"
         let creationDate = Date(timeIntervalSince1970: Double(fields[5])!)
@@ -134,7 +142,7 @@ extension TodoItem {
         csvString += "\(deadline != nil ? String(deadline!.timeIntervalSince1970) : ""),"
         csvString += "\(String(done)),"
         csvString += "\(String(creationDate.timeIntervalSince1970)),"
-        csvString += "\(deadline != nil ? String(deadline!.timeIntervalSince1970) : "")"
+        csvString += "\(changedDate != nil ? String(changedDate!.timeIntervalSince1970) : "")"
         
         return csvString
     }
