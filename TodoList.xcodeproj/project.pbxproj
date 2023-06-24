@@ -16,6 +16,7 @@
 		BF67E6FD2A446D9900AB2F63 /* ItemScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF67E6FC2A446D9900AB2F63 /* ItemScrollView.swift */; };
 		BF67E6FF2A44769200AB2F63 /* ItemDeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF67E6FE2A44769200AB2F63 /* ItemDeleteButton.swift */; };
 		BF67E7032A4483CA00AB2F63 /* ItemDetailsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF67E7022A4483CA00AB2F63 /* ItemDetailsStackView.swift */; };
+		BF7E9EFF2A4588440081A17E /* ItemCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7E9EFE2A4588440081A17E /* ItemCalendarView.swift */; };
 		BFB38D0A2A42F37E0045810F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB38D092A42F37E0045810F /* Constants.swift */; };
 		BFB38D0B2A42F3BE0045810F /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC489122A33C92200E6B0FC /* ItemViewController.swift */; };
 		BFC4890F2A33C92200E6B0FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC4890E2A33C92200E6B0FC /* AppDelegate.swift */; };
@@ -60,6 +61,7 @@
 		BF67E6FC2A446D9900AB2F63 /* ItemScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemScrollView.swift; sourceTree = "<group>"; };
 		BF67E6FE2A44769200AB2F63 /* ItemDeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDeleteButton.swift; sourceTree = "<group>"; };
 		BF67E7022A4483CA00AB2F63 /* ItemDetailsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsStackView.swift; sourceTree = "<group>"; };
+		BF7E9EFE2A4588440081A17E /* ItemCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCalendarView.swift; sourceTree = "<group>"; };
 		BFB38D092A42F37E0045810F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BFC4890B2A33C92200E6B0FC /* TodoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC4890E2A33C92200E6B0FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				BF67E6F52A44444700AB2F63 /* ItemImportanceView.swift */,
 				BF67E6F32A44435C00AB2F63 /* ItemDeadlineView.swift */,
 				BF67E6F82A444AB300AB2F63 /* ItemSeparatorView.swift */,
+				BF7E9EFE2A4588440081A17E /* ItemCalendarView.swift */,
 				BF67E6FE2A44769200AB2F63 /* ItemDeleteButton.swift */,
 				BFC489122A33C92200E6B0FC /* ItemViewController.swift */,
 			);
@@ -320,6 +323,7 @@
 				BFC4890F2A33C92200E6B0FC /* AppDelegate.swift in Sources */,
 				BFC4893F2A33C9BE00E6B0FC /* TodoItem.swift in Sources */,
 				BFC489552A38A3EE00E6B0FC /* FileCache.swift in Sources */,
+				BF7E9EFF2A4588440081A17E /* ItemCalendarView.swift in Sources */,
 				BF67E6F42A44435C00AB2F63 /* ItemDeadlineView.swift in Sources */,
 				BF67E7032A4483CA00AB2F63 /* ItemDetailsStackView.swift in Sources */,
 				BF67E6F92A444AB300AB2F63 /* ItemSeparatorView.swift in Sources */,

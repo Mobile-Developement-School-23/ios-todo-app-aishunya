@@ -7,6 +7,32 @@ final class ItemDeadlineView: UIStackView {
     private lazy var deadlineLabel = getDeadlineLabel()
     private lazy var switchControl = getSwitchContol()
     
+    var delegate: ItemViewController?
+    var deadline: Date? {
+        didSet {
+            guard let deadline else {
+                return
+            }
+            
+            deadlineLabel.text = dateFormatter.string(from: deadline)
+        }
+    }
+    
+    private var dateFormatter: DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d MMMM yyyy"
+        dateFormatter.locale = Locale(identifier: "ru")
+        return dateFormatter
+    }
+    
+    func isSwitchOn() -> Bool {
+        return switchControl.isOn
+    }
+    
+    func setSwitchOn() {
+        switchControl.setOn(true, animated: true)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -30,7 +56,7 @@ final class ItemDeadlineView: UIStackView {
         switchControl.isOn = false
         switchControl.isEnabled = true
         switchControl.onTintColor = K.Colors.green
-        switchControl.thumbTintColor = K.Colors.backSecondary
+        switchControl.thumbTintColor = K.Colors.white
         switchControl.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
         return switchControl
     }
@@ -47,7 +73,7 @@ final class ItemDeadlineView: UIStackView {
     
 }
 
-//MARK: - Including Deadline (Switch On)
+//MARK: - Including Date Button (Switch On)
 
 extension ItemDeadlineView {
 
@@ -55,11 +81,12 @@ extension ItemDeadlineView {
         return getDateButton()
     }
     
+    private var deadlineDateStack: UIStackView {
+        return getDeadlineDateStack()
+    }
+    
     @objc func switchValueChanged(_ sender: UISwitch) {
             if sender.isOn {
-                var deadlineDateStack: UIStackView {
-                    return getDeadlineDateStack()
-                }
                 removeSubviews(from: self)
                 addArrangedSubview(deadlineDateStack)
                 addArrangedSubview(switchControl)
@@ -105,8 +132,21 @@ extension ItemDeadlineView {
         }
     }
     
-    @objc func dateButtonPressed() {
-        
+    @objc func dateButtonPressed(){
+        delegate?.dateButtonPressed()
+    }
+}
+
+//MARK: - Including CalendarView
+
+extension ItemDeadlineView: UICalendarViewDelegate {
+    
+    private var calendarView: ItemCalendarView {
+        return ItemCalendarView(frame: CGRect(x: 0, y: 0, width: 311, height: 312))
+    }
+    
+    private func showCalendarView() {
+        deadlineDateStack.addArrangedSubview(calendarView)
     }
 }
 

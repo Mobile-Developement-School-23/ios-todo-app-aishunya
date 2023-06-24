@@ -1,8 +1,8 @@
 
 import UIKit
 
-final class ItemViewController: UIViewController, UITextViewDelegate {
-    
+final class ItemViewController: UIViewController, UICalendarViewDelegate, UITextViewDelegate {
+
     private lazy var navigationBar = setNavigationBar()
     private let scrollView = ItemScrollView()
     private let textView = ItemTextView()
@@ -11,9 +11,15 @@ final class ItemViewController: UIViewController, UITextViewDelegate {
     private let deadlineView = ItemDeadlineView()
     private let deleteButton = ItemDeleteButton()
     private var detailsStack = ItemDetailsStackView()
-    
+    private var calendarView = ItemCalendarView()
+    private var calendarSeparator = ItemSeparatorView()
+    private var fileCache = FileCache()
+    private var todoItem: TodoItem?
+
     override func loadView() {
-        detailsStack = ItemDetailsStackView(arrangedSubviews: [importanceView, separator, deadlineView])
+        calendarView.isHidden = true
+        calendarSeparator.isHidden = true
+        detailsStack = ItemDetailsStackView(arrangedSubviews: [importanceView, separator, deadlineView, calendarSeparator, calendarView])
         super.loadView()
         view.addSubview(scrollView)
         view.addSubview(navigationBar)
@@ -21,9 +27,28 @@ final class ItemViewController: UIViewController, UITextViewDelegate {
         scrollView.addToStackView(detailsStack)
         scrollView.addToStackView(deleteButton)
         setConstraints()
-//        textView.delegate = self
+        deadlineView.delegate = self
+        calendarView.delegate = self
+        fileCache.loadFromFile(fileName: "test1")
+        if !fileCache.dictionary.isEmpty {
+            todoItem = Array(fileCache.dictionary.values)[0]
+            textView.setText(newText: todoItem!.text)
+            importanceView.setImportance(newImportance: todoItem!.importance)
+            if (todoItem?.deadline != nil) {
+                deadlineView.setSwitchOn()
+                calendarView.setDeadlineDate(newDate: todoItem!.deadline!)
+            }
+            deleteButton.isEnabled = true
+            deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        }
     }
     override func viewDidLoad() {
+        textView.subscribeTextChanged { textNotEmpty in
+            self.navigationBar.topItem?.rightBarButtonItem?.isEnabled = textNotEmpty
+                }
+        let tapForHideKeyboard = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tapForHideKeyboard.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapForHideKeyboard)
         super.viewDidLoad()
         setup()
     }
@@ -31,6 +56,10 @@ final class ItemViewController: UIViewController, UITextViewDelegate {
     private func setup() {
         view.backgroundColor = K.Colors.backPrimary
     }
+    
+    @objc private func hideKeyboard() {
+            self.view.endEditing(true)
+        }
 
     
     private func setConstraints() {
@@ -65,6 +94,7 @@ extension ItemViewController {
         navigationItem.leftBarButtonItem = cancelButton
         
         let saveButton = UIBarButtonItem(title: K.Strings.save, style: .plain, target: self, action: #selector(saveButtonTapped))
+        
         let attributes: [NSAttributedString.Key: Any] = [
                     .font: UIFont.boldSystemFont(ofSize: 17)
                 ]
@@ -73,7 +103,7 @@ extension ItemViewController {
         saveButton.setTitleTextAttributes(attributes, for: .highlighted)
         
        
-        saveButton.tintColor = K.Colors.labelDisable
+        saveButton.isEnabled = false
         navigationItem.rightBarButtonItem = saveButton
         
         navigationBar.items = [navigationItem]
@@ -89,10 +119,50 @@ extension ItemViewController {
     }
     
     @objc func cancelButtonTapped() {
+        dismiss(animated: true)
         print("Cancelled")
     }
     
     @objc func saveButtonTapped() {
         print("Saved")
+        saveItem()
     }
+    
+    @objc func deleteButtonTapped() {
+        print("Delete")
+        fileCache.deleteItem(id: todoItem!.id)
+        fileCache.saveToFile(name: "test1")
+    }
+    
+    func saveItem() {
+        let text = textView.getText()
+        let importance = importanceView.getImportance()
+        var deadline: Date? = nil
+        if (deadlineView.isSwitchOn()) {
+            deadline = calendarView.getDeadlineDate()
+        }
+        
+        let todoItem = TodoItem(text: text, importance: importance, deadline: deadline, done: false, creationDate: Date(), changedDate: Date())
+        
+        fileCache.addItem(item: todoItem)
+        fileCache.saveToFile(name: "test1")
+    }
+    
+    @objc func dateButtonPressed() {
+        
+        // ДОСТАТЬ ДЕДЛАЙН
+        
+        if calendarView.isHidden == true {
+            calendarView.isHidden = false
+            calendarSeparator.isHidden = false
+        } else {
+            calendarView.isHidden = true
+            calendarSeparator.isHidden = true
+            
+        }
+    }
+    
 }
+
+
+

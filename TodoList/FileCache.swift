@@ -24,6 +24,7 @@ class FileCache {
         } catch {
             
         }
+        print("Succesfully saved TodoItem")
     }
     
     func loadFromFile(fileName: String) {
