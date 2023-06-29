@@ -39,6 +39,9 @@ struct K {
         static let item = "Дело"
         static let save = "Сохранить"
         static let cancel = "Отменить"
+        static let mainTitle = "Мои дела"
+        static let done = "Выполнено"
+        static let show = "Показать"
     }
     
 }

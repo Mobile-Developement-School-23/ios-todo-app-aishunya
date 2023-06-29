@@ -3,7 +3,6 @@ import UIKit
 
 final class ItemViewController: UIViewController, UICalendarViewDelegate, UITextViewDelegate {
 
-    private lazy var navigationBar = setNavigationBar()
     private let scrollView = ItemScrollView()
     private let textView = ItemTextView()
     private let importanceView = ItemImportanceView()
@@ -15,6 +14,7 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
     private var calendarSeparator = ItemSeparatorView()
     private var fileCache = FileCache()
     private var todoItem: TodoItem?
+    
 
     override func loadView() {
         
@@ -23,7 +23,6 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
         calendarView.isHidden = true
         calendarSeparator.isHidden = true
         view.addSubview(scrollView)
-        view.addSubview(navigationBar)
         
         scrollView.addToStackView(textView)
         scrollView.addToStackView(detailsStack)
@@ -50,9 +49,12 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
     }
     
     override func viewDidLoad() {
-        textView.subscribeTextChanged { textNotEmpty in
-            self.navigationBar.topItem?.rightBarButtonItem?.isEnabled = textNotEmpty
-                }
+        super.viewDidLoad()
+        setNavigationBar()
+        
+//        textView.subscribeTextChanged { textNotEmpty in
+//            self.customNavigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = textNotEmpty
+//                }
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:UIResponder.keyboardWillHideNotification, object: nil)
@@ -60,11 +62,11 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
         let tapForHideKeyboard = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tapForHideKeyboard.cancelsTouchesInView = false
         view.addGestureRecognizer(tapForHideKeyboard)
-        super.viewDidLoad()
         setup()
         
         deleteButton.isUserInteractionEnabled = true
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        
     }
     
     private func setup() {
@@ -74,7 +76,7 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
     private func setConstraints() {
         NSLayoutConstraint.activate(
             [
-                scrollView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
+                scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
                 scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
                 scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
                 scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -82,53 +84,6 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
             ]
         )
     }
-}
-
-//MARK: - Navigation Bar Configure
-
-extension ItemViewController {
-    private func setNavigationBar() -> UINavigationBar {
-        let navigationBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
-        navigationBar.translatesAutoresizingMaskIntoConstraints = false
-        let navigationItem = UINavigationItem(title: K.Strings.item)
-        let navigationBarAppearance = UINavigationBarAppearance()
-        navigationBarAppearance.shadowColor = nil
-        navigationBarAppearance.backgroundColor = nil
-        navigationBar.backgroundColor = nil
-        navigationBar.barTintColor = K.Colors.backPrimary
-        navigationBar.isTranslucent = true
-        navigationBar.setValue(true, forKey: "hidesShadow")
-        
-        let cancelButton = UIBarButtonItem(title: K.Strings.cancel, style: .plain, target: self, action: #selector(cancelButtonTapped))
-        navigationItem.leftBarButtonItem = cancelButton
-        
-        let saveButton = UIBarButtonItem(title: K.Strings.save, style: .plain, target: self, action: #selector(saveButtonTapped))
-        
-        let attributes: [NSAttributedString.Key: Any] = [
-                    .font: UIFont.boldSystemFont(ofSize: 17)
-                ]
-        saveButton.setTitleTextAttributes(attributes, for: .normal)
-        saveButton.setTitleTextAttributes(attributes, for: .disabled)
-        saveButton.setTitleTextAttributes(attributes, for: .highlighted)
-        
-       
-        saveButton.isEnabled = false
-        navigationItem.rightBarButtonItem = saveButton
-        
-        navigationBar.items = [navigationItem]
-        view.addSubview(navigationBar)
-        
-        NSLayoutConstraint.activate([
-                    navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                    navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                    navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-                ])
-        
-        return navigationBar
-    }
-    
-
-    
     //MARK: - Controls
     
     @objc func cancelButtonTapped() {
@@ -210,4 +165,30 @@ extension ItemViewController {
 }
 
 
+//MARK: - Navigation Bar Configure
 
+extension ItemViewController {
+    
+    private func setNavigationBar()  {
+        
+        let cancelButton = UIBarButtonItem(title: K.Strings.cancel, style: .plain, target: self, action: #selector(cancelButtonTapped))
+        navigationItem.leftBarButtonItem = cancelButton
+        
+        let saveButton = UIBarButtonItem(title: K.Strings.save, style: .plain, target: self, action: #selector(saveButtonTapped))
+        navigationItem.rightBarButtonItem = saveButton
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.boldSystemFont(ofSize: 17)
+        ]
+        saveButton.setTitleTextAttributes(attributes, for: .normal)
+        saveButton.setTitleTextAttributes(attributes, for: .disabled)
+        saveButton.setTitleTextAttributes(attributes, for: .highlighted)
+        
+        let navigationBarAppearance = UINavigationBarAppearance()
+        navigationBarAppearance.shadowColor = nil
+        navigationBarAppearance.backgroundColor = nil
+        
+        saveButton.isEnabled = false
+    }
+    
+}
