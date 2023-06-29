@@ -17,6 +17,8 @@
 		BF67E6FF2A44769200AB2F63 /* ItemDeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF67E6FE2A44769200AB2F63 /* ItemDeleteButton.swift */; };
 		BF67E7032A4483CA00AB2F63 /* ItemDetailsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF67E7022A4483CA00AB2F63 /* ItemDetailsStackView.swift */; };
 		BF7E9EFF2A4588440081A17E /* ItemCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7E9EFE2A4588440081A17E /* ItemCalendarView.swift */; };
+		BFA67ABB2A4DCCFE00AF4920 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA67ABA2A4DCCFE00AF4920 /* TodoListViewController.swift */; };
+		BFA67ABD2A4DCD3900AF4920 /* TodoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA67ABC2A4DCD3900AF4920 /* TodoListCell.swift */; };
 		BFB38D0A2A42F37E0045810F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB38D092A42F37E0045810F /* Constants.swift */; };
 		BFB38D0B2A42F3BE0045810F /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC489122A33C92200E6B0FC /* ItemViewController.swift */; };
 		BFC4890F2A33C92200E6B0FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC4890E2A33C92200E6B0FC /* AppDelegate.swift */; };
@@ -62,6 +64,8 @@
 		BF67E6FE2A44769200AB2F63 /* ItemDeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDeleteButton.swift; sourceTree = "<group>"; };
 		BF67E7022A4483CA00AB2F63 /* ItemDetailsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsStackView.swift; sourceTree = "<group>"; };
 		BF7E9EFE2A4588440081A17E /* ItemCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCalendarView.swift; sourceTree = "<group>"; };
+		BFA67ABA2A4DCCFE00AF4920 /* TodoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewController.swift; sourceTree = "<group>"; };
+		BFA67ABC2A4DCD3900AF4920 /* TodoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListCell.swift; sourceTree = "<group>"; };
 		BFB38D092A42F37E0045810F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BFC4890B2A33C92200E6B0FC /* TodoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC4890E2A33C92200E6B0FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -114,7 +118,16 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		BFB38D0E2A42F4510045810F /* Item */ = {
+		BFA67ABE2A4DCD5300AF4920 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				BFC4890E2A33C92200E6B0FC /* AppDelegate.swift */,
+				BFC489102A33C92200E6B0FC /* SceneDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
+		BFB38D0E2A42F4510045810F /* TodoItem */ = {
 			isa = PBXGroup;
 			children = (
 				BF67E7022A4483CA00AB2F63 /* ItemDetailsStackView.swift */,
@@ -127,7 +140,7 @@
 				BF67E6FE2A44769200AB2F63 /* ItemDeleteButton.swift */,
 				BFC489122A33C92200E6B0FC /* ItemViewController.swift */,
 			);
-			path = Item;
+			path = TodoItem;
 			sourceTree = "<group>";
 		};
 		BFC489022A33C92200E6B0FC = {
@@ -153,13 +166,14 @@
 		BFC4890D2A33C92200E6B0FC /* TodoList */ = {
 			isa = PBXGroup;
 			children = (
-				BF67E6F72A44466200AB2F63 /* Fonts */,
-				BFC4890E2A33C92200E6B0FC /* AppDelegate.swift */,
-				BFC489102A33C92200E6B0FC /* SceneDelegate.swift */,
+				BFA67ABE2A4DCD5300AF4920 /* Delegates */,
 				BFC4893E2A33C9BE00E6B0FC /* TodoItem.swift */,
+				BFA67ABA2A4DCCFE00AF4920 /* TodoListViewController.swift */,
+				BFA67ABC2A4DCD3900AF4920 /* TodoListCell.swift */,
 				BFC489542A38A3EE00E6B0FC /* FileCache.swift */,
 				BFB38D092A42F37E0045810F /* Constants.swift */,
-				BFB38D0E2A42F4510045810F /* Item */,
+				BFB38D0E2A42F4510045810F /* TodoItem */,
+				BF67E6F72A44466200AB2F63 /* Fonts */,
 				BFC489142A33C92200E6B0FC /* Main.storyboard */,
 				BFC489172A33C92300E6B0FC /* Assets.xcassets */,
 				BFC489192A33C92300E6B0FC /* LaunchScreen.storyboard */,
@@ -327,11 +341,13 @@
 				BF67E6F42A44435C00AB2F63 /* ItemDeadlineView.swift in Sources */,
 				BF67E7032A4483CA00AB2F63 /* ItemDetailsStackView.swift in Sources */,
 				BF67E6F92A444AB300AB2F63 /* ItemSeparatorView.swift in Sources */,
+				BFA67ABB2A4DCCFE00AF4920 /* TodoListViewController.swift in Sources */,
 				BF67E6F62A44444700AB2F63 /* ItemImportanceView.swift in Sources */,
 				BF67E6FF2A44769200AB2F63 /* ItemDeleteButton.swift in Sources */,
 				BFC489112A33C92200E6B0FC /* SceneDelegate.swift in Sources */,
 				BF67E6FB2A4464B000AB2F63 /* ItemTextView.swift in Sources */,
 				BFB38D0A2A42F37E0045810F /* Constants.swift in Sources */,
+				BFA67ABD2A4DCD3900AF4920 /* TodoListCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
