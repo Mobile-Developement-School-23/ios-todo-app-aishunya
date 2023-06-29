@@ -47,8 +47,6 @@ final class ItemTextView: UITextView {
             onTextChanged = callback
         }
     
-    
-    
 }
 
 extension ItemTextView: UITextViewDelegate {

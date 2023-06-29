@@ -42,7 +42,7 @@ final class ItemImportanceView: UIStackView {
     private func getSegmentedControl() -> UISegmentedControl {
         let segmentedControl = UISegmentedControl(items: [UIImage(named: "arrowDown")!,"нет",UIImage(named: "important")!])
         segmentedControl.frame = CGRect(x: 0, y: 0, width: 150, height: 36)
-        segmentedControl.selectedSegmentIndex = 2
+        segmentedControl.selectedSegmentIndex = 1
         segmentedControl.tintColor = K.Colors.backElevated
         segmentedControl.backgroundColor = K.Colors.overlay
         segmentedControl.widthAnchor.constraint(equalToConstant: 150).isActive = true

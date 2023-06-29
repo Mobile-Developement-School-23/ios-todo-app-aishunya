@@ -9,7 +9,7 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
     private let importanceView = ItemImportanceView()
     private let separator = ItemSeparatorView()
     private let deadlineView = ItemDeadlineView()
-    private let deleteButton = ItemDeleteButton()
+    private let deleteButton = ItemDeleteButton(type: .roundedRect)
     private var detailsStack = ItemDetailsStackView()
     private var calendarView = ItemCalendarView()
     private var calendarSeparator = ItemSeparatorView()
@@ -17,51 +17,60 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
     private var todoItem: TodoItem?
 
     override func loadView() {
+        
+        super.loadView()
+        detailsStack = ItemDetailsStackView(arrangedSubviews: [importanceView, separator, deadlineView, calendarSeparator, calendarView])
         calendarView.isHidden = true
         calendarSeparator.isHidden = true
-        detailsStack = ItemDetailsStackView(arrangedSubviews: [importanceView, separator, deadlineView, calendarSeparator, calendarView])
-        super.loadView()
         view.addSubview(scrollView)
         view.addSubview(navigationBar)
+        
         scrollView.addToStackView(textView)
         scrollView.addToStackView(detailsStack)
         scrollView.addToStackView(deleteButton)
+        
         setConstraints()
+        
         deadlineView.delegate = self
         calendarView.delegate = self
+        
         fileCache.loadFromFile(fileName: "test1")
+        
         if !fileCache.dictionary.isEmpty {
             todoItem = Array(fileCache.dictionary.values)[0]
             textView.setText(newText: todoItem!.text)
             importanceView.setImportance(newImportance: todoItem!.importance)
-            if (todoItem?.deadline != nil) {
+            
+            if todoItem?.deadline != nil {
                 deadlineView.setSwitchOn()
                 calendarView.setDeadlineDate(newDate: todoItem!.deadline!)
             }
-            deleteButton.isEnabled = true
-            deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         }
+        
     }
+    
     override func viewDidLoad() {
         textView.subscribeTextChanged { textNotEmpty in
             self.navigationBar.topItem?.rightBarButtonItem?.isEnabled = textNotEmpty
                 }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:UIResponder.keyboardWillHideNotification, object: nil)
+        
         let tapForHideKeyboard = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tapForHideKeyboard.cancelsTouchesInView = false
         view.addGestureRecognizer(tapForHideKeyboard)
         super.viewDidLoad()
         setup()
+        
+        deleteButton.isUserInteractionEnabled = true
+        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
     }
     
     private func setup() {
         view.backgroundColor = K.Colors.backPrimary
     }
-    
-    @objc private func hideKeyboard() {
-            self.view.endEditing(true)
-        }
 
-    
     private func setConstraints() {
         NSLayoutConstraint.activate(
             [
@@ -118,6 +127,10 @@ extension ItemViewController {
         return navigationBar
     }
     
+
+    
+    //MARK: - Controls
+    
     @objc func cancelButtonTapped() {
         dismiss(animated: true)
         print("Cancelled")
@@ -130,22 +143,25 @@ extension ItemViewController {
     
     @objc func deleteButtonTapped() {
         print("Delete")
-        fileCache.deleteItem(id: todoItem!.id)
-        fileCache.saveToFile(name: "test1")
+        if todoItem != nil {
+            fileCache.deleteItem(id: todoItem!.id)
+            fileCache.saveToFile(name: "test1")
+        }
     }
     
     func saveItem() {
         let text = textView.getText()
         let importance = importanceView.getImportance()
         var deadline: Date? = nil
-        if (deadlineView.isSwitchOn()) {
+        if deadlineView.isSwitchOn() {
             deadline = calendarView.getDeadlineDate()
         }
         
         let todoItem = TodoItem(text: text, importance: importance, deadline: deadline, done: false, creationDate: Date(), changedDate: Date())
         
         fileCache.addItem(item: todoItem)
-        fileCache.saveToFile(name: "test1")
+        fileCache.saveToFile(name: todoItem.id)
+        dismiss(animated: true)
     }
     
     @objc func dateButtonPressed() {
@@ -161,6 +177,35 @@ extension ItemViewController {
             
         }
     }
+    
+    //MARK: - Keyboard
+    
+    @objc private func hideKeyboard() {
+            self.view.endEditing(true)
+        }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+            guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                return
+            }
+            
+            let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.height, right: 0)
+            scrollView.contentInset = contentInsets
+            scrollView.scrollIndicatorInsets = contentInsets
+            
+            let caretRect = textView.caretRect(for: textView.selectedTextRange?.end ?? textView.endOfDocument)
+            scrollView.scrollRectToVisible(caretRect, animated: true)
+        }
+        
+        @objc func keyboardWillHide(_ notification: Notification) {
+            scrollView.contentInset = UIEdgeInsets.zero
+            scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
+        }
+        
+        func textViewDidChange(_ textView: UITextView) {
+            let caretRect = textView.caretRect(for: textView.selectedTextRange?.end ?? textView.endOfDocument)
+            scrollView.scrollRectToVisible(caretRect, animated: true)
+        }
     
 }
 
