@@ -93,8 +93,20 @@ extension ItemDeadlineView {
             } else {
                 removeSubviews(from: self)
                 setup()
+                
             }
         }
+    
+    var deadlineLabelText: String {
+        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: .now)!
+        return dateToString(date: tomorrow)
+    }
+    
+    private func dateToString(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMMM yyyy"
+        return formatter.string(from: date)
+    }
     
     private func getDateButton() -> UIButton {
         let dateButton = UIButton(frame: CGRect(x: 0, y: 0, width: 248, height: 18))
@@ -102,7 +114,7 @@ extension ItemDeadlineView {
         let attributes: [NSAttributedString.Key: Any] = [
                     .font: UIFont.boldSystemFont(ofSize: 13)
                 ]
-        let attributedTitle = NSAttributedString(string: "23 июня 2023", attributes: attributes)
+        let attributedTitle = NSAttributedString(string: deadlineLabelText, attributes: attributes)
         dateButton.setAttributedTitle(attributedTitle, for: .normal)
         dateButton.titleLabel?.textColor = K.Colors.blue
         dateButton.titleLabel?.textAlignment = .left

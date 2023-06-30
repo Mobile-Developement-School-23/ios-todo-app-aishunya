@@ -58,12 +58,13 @@ extension ItemTextView: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
+        textView.text = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
         if textView.text.isEmpty {
             textView.text = placeholder
             textView.textColor = K.Colors.labelTertiary
             text = textView.text
         }
         
-        onTextChanged?(!textView.text.isEmpty)
+        onTextChanged?(textView.text != placeholder)
     }
 }

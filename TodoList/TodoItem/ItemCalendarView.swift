@@ -4,7 +4,9 @@ import UIKit
 
 final class ItemCalendarView: UICalendarView, UICalendarViewDelegate {
     
-    private var deadline = Date()
+    private var deadline: Date?
+    
+    var dateLabel: UILabel?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -18,12 +20,25 @@ final class ItemCalendarView: UICalendarView, UICalendarViewDelegate {
         super.init(coder: coder)
     }
     
-    func getDeadlineDate() -> Date {
+    func getDeadlineDate() -> Date? {
         return deadline
     }
     func setDeadlineDate(newDate: Date) {
         deadline = newDate
     }
+
+    func dateToString(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMMM yyyy"
+        return formatter.string(from: date)
+    }
+    
+    private func hideCalendar() {
+        UIView.animate(withDuration: TimeInterval(0.5)) {
+            self.isHidden = true
+        }
+    }
+    
     private func setup(){
         locale = .current
         fontDesign = .default
@@ -34,7 +49,7 @@ final class ItemCalendarView: UICalendarView, UICalendarViewDelegate {
 
 extension ItemCalendarView: UICalendarSelectionSingleDateDelegate {
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
-        deadline = dateComponents!.date!
+        deadline = dateComponents?.date
+        dateLabel?.text = dateToString(date: deadline!)
     }
 }
-

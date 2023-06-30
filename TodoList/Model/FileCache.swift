@@ -3,18 +3,32 @@ import Foundation
 
 class FileCache {
     
-    var dictionary = [String: TodoItem]()
+    var items = [TodoItem]()
     
     func addItem(item: TodoItem) {
-        dictionary[item.id] = item
+        items.append(item)
     }
     
     func deleteItem(id: String) {
-        dictionary.removeValue(forKey: id)
+        for i in 0..<items.count {
+            if items[i].id == id {
+                items.remove(at: i)
+                break
+            }
+        }
+    }
+    
+    func toggleDone(id: String) {
+        for i in 0..<items.count {
+            if items[i].id == id {
+                items[i].done = !items[i].done
+                break
+            }
+        }
     }
     
     func saveToFile(name: String) {
-        let str = dictionary.values.reduce("") { partialResult, item in
+        let str = items.reduce("") { partialResult, item in
             "\(partialResult)\n\n\(item.json)"
         }
         let filename = getDocumentsDirectory().appendingPathComponent(name)
@@ -31,13 +45,13 @@ class FileCache {
         let todoItems = getTextFromFile(fileName: fileName).split(separator: "\n\n")
         for i in 0..<todoItems.count {
             let todoItem = TodoItem.parse(json: todoItems[i])!
-            dictionary[todoItem.id] = todoItem
+            items.append(todoItem)
         }
     }
     
     func saveToCSV(name: String) {
         var str = "Text,ID,Importance,Deadline,Done,Creation Date,Changed Date"
-        str += dictionary.values.reduce("") { partialResult, item in
+        str += items.reduce("") { partialResult, item in
             "\(partialResult)\n\(item.csv)"
         }
         let filename = getDocumentsDirectory().appendingPathComponent("\(name).csv")
@@ -53,12 +67,17 @@ class FileCache {
         let todoItems = getTextFromFile(fileName: "\(fileName).csv").split(separator: "\n")
         for i in 1..<todoItems.count {
             let todoItem = TodoItem.parse(csv: String(todoItems[i]))!
-            dictionary[todoItem.id] = todoItem
+            items.append(todoItem)
         }
     }
     
     func exists(id: String) -> Bool {
-        return dictionary[id] != nil
+        for i in 0..<items.count {
+            if items[i].id == id {
+                return true
+            }
+        }
+        return false
     }
     
     func getDocumentsDirectory() -> URL {
