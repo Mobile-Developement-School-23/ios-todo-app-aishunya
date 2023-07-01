@@ -34,6 +34,11 @@
 		BFDB00E72A4E392E00500C93 /* TodoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB00E62A4E392E00500C93 /* TodoListCell.swift */; };
 		BFDB00EA2A4E401900500C93 /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB00E92A4E401900500C93 /* FloatingButton.swift */; };
 		BFDB00EC2A4F273400500C93 /* ContentSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB00EB2A4F273400500C93 /* ContentSizedTableView.swift */; };
+		BFDB00F32A4FE82500500C93 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = BFDB00F22A4FE82500500C93 /* CocoaLumberjack */; };
+		BFDB00F52A4FE82500500C93 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BFDB00F42A4FE82500500C93 /* CocoaLumberjackSwift */; };
+		BFDB00F72A4FE82500500C93 /* CocoaLumberjackSwiftLogBackend in Frameworks */ = {isa = PBXBuildFile; productRef = BFDB00F62A4FE82500500C93 /* CocoaLumberjackSwiftLogBackend */; };
+		BFDB00FA2A4FE87B00500C93 /* SwiftLintFramework in Frameworks */ = {isa = PBXBuildFile; productRef = BFDB00F92A4FE87B00500C93 /* SwiftLintFramework */; };
+		BFDB00FC2A4FE87B00500C93 /* swiftlint in Frameworks */ = {isa = PBXBuildFile; productRef = BFDB00FB2A4FE87B00500C93 /* swiftlint */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +95,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFDB00FC2A4FE87B00500C93 /* swiftlint in Frameworks */,
+				BFDB00FA2A4FE87B00500C93 /* SwiftLintFramework in Frameworks */,
+				BFDB00F52A4FE82500500C93 /* CocoaLumberjackSwift in Frameworks */,
+				BFDB00F72A4FE82500500C93 /* CocoaLumberjackSwiftLogBackend in Frameworks */,
+				BFDB00F32A4FE82500500C93 /* CocoaLumberjack in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +251,13 @@
 			dependencies = (
 			);
 			name = TodoList;
+			packageProductDependencies = (
+				BFDB00F22A4FE82500500C93 /* CocoaLumberjack */,
+				BFDB00F42A4FE82500500C93 /* CocoaLumberjackSwift */,
+				BFDB00F62A4FE82500500C93 /* CocoaLumberjackSwiftLogBackend */,
+				BFDB00F92A4FE87B00500C93 /* SwiftLintFramework */,
+				BFDB00FB2A4FE87B00500C93 /* swiftlint */,
+			);
 			productName = ToDoList;
 			productReference = BFC4890B2A33C92200E6B0FC /* TodoList.app */;
 			productType = "com.apple.product-type.application";
@@ -313,6 +330,10 @@
 				Base,
 			);
 			mainGroup = BFC489022A33C92200E6B0FC;
+			packageReferences = (
+				BFDB00F12A4FE82500500C93 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
+				BFDB00F82A4FE87B00500C93 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+			);
 			productRefGroup = BFC4890C2A33C92200E6B0FC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -708,6 +729,53 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BFDB00F12A4FE82500500C93 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CocoaLumberjack/CocoaLumberjack";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		BFDB00F82A4FE87B00500C93 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.52.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BFDB00F22A4FE82500500C93 /* CocoaLumberjack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BFDB00F12A4FE82500500C93 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjack;
+		};
+		BFDB00F42A4FE82500500C93 /* CocoaLumberjackSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BFDB00F12A4FE82500500C93 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwift;
+		};
+		BFDB00F62A4FE82500500C93 /* CocoaLumberjackSwiftLogBackend */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BFDB00F12A4FE82500500C93 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwiftLogBackend;
+		};
+		BFDB00F92A4FE87B00500C93 /* SwiftLintFramework */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BFDB00F82A4FE87B00500C93 /* XCRemoteSwiftPackageReference "SwiftLint" */;
+			productName = SwiftLintFramework;
+		};
+		BFDB00FB2A4FE87B00500C93 /* swiftlint */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BFDB00F82A4FE87B00500C93 /* XCRemoteSwiftPackageReference "SwiftLint" */;
+			productName = swiftlint;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BFC489032A33C92200E6B0FC /* Project object */;
 }
