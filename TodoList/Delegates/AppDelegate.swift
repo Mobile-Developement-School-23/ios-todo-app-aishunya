@@ -1,14 +1,18 @@
-
-
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    let fileCache = FileCache()
+    
+    static func shared() -> AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        fileCache.loadFromFile(fileName: "test1")
+        
         return true
     }
 
@@ -28,4 +32,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
-

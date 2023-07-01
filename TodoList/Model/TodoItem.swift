@@ -3,11 +3,11 @@ import Foundation
 
 struct TodoItem{
     
-    let text: String
+    var text: String
     let id: String
     let importance: Importance
     let deadline: Date?
-    let done: Bool
+    var done: Bool
     let creationDate: Date
     let changedDate: Date?
     

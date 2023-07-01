@@ -1,6 +1,10 @@
 
 import UIKit
 
+protocol ItemViewControllerDelegate: AnyObject {
+    func itemsChanged()
+}
+
 final class ItemViewController: UIViewController, UICalendarViewDelegate, UITextViewDelegate {
 
     private let scrollView = ItemScrollView()
@@ -12,8 +16,10 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
     private var detailsStack = ItemDetailsStackView()
     private var calendarView = ItemCalendarView()
     private var calendarSeparator = ItemSeparatorView()
-    private var fileCache = FileCache()
-    private var todoItem: TodoItem?
+    private var fileCache = AppDelegate.shared().fileCache
+    
+    var todoItem: TodoItem?
+    weak var delegate: ItemViewControllerDelegate?
     
 
     override func loadView() {
@@ -32,29 +38,15 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
         
         deadlineView.delegate = self
         calendarView.delegate = self
-        
-        fileCache.loadFromFile(fileName: "test1")
-        
-        if !fileCache.dictionary.isEmpty {
-            todoItem = Array(fileCache.dictionary.values)[0]
-            textView.setText(newText: todoItem!.text)
-            importanceView.setImportance(newImportance: todoItem!.importance)
-            
-            if todoItem?.deadline != nil {
-                deadlineView.setSwitchOn()
-                calendarView.setDeadlineDate(newDate: todoItem!.deadline!)
-            }
-        }
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBar()
         
-//        textView.subscribeTextChanged { textNotEmpty in
-//            self.customNavigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = textNotEmpty
-//                }
+        textView.subscribeTextChanged { isEnabled in
+            self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = isEnabled
+                }
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:UIResponder.keyboardWillHideNotification, object: nil)
@@ -115,13 +107,13 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
         let todoItem = TodoItem(text: text, importance: importance, deadline: deadline, done: false, creationDate: Date(), changedDate: Date())
         
         fileCache.addItem(item: todoItem)
-        fileCache.saveToFile(name: todoItem.id)
+        fileCache.saveToFile(name: "test1")
+        print(fileCache.items)
+        delegate?.itemsChanged()
         dismiss(animated: true)
     }
     
     @objc func dateButtonPressed() {
-        
-        // ДОСТАТЬ ДЕДЛАЙН
         
         if calendarView.isHidden == true {
             calendarView.isHidden = false
