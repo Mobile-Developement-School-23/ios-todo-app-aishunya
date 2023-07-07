@@ -4,7 +4,7 @@ import Foundation
 struct TodoItem{
     
     var text: String
-    let id: String
+    var id: String
     let importance: Importance
     let deadline: Date?
     var done: Bool

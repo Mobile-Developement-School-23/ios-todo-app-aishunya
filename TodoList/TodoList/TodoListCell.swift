@@ -22,35 +22,43 @@ final class TodoListCell: UITableViewCell {
     
     var item: TodoItem? {
         didSet {
-            itemTitle.text = item?.text
-            if item?.deadline != nil {
-//                deadlineLabel.text = item?.deadline?.formatted(date: .abbreviated, time: .omitted)
-//                calendarImageView.image = UIImage(systemName: "calendar")
-            }
             if item != nil {
-                if item!.done {
-                    checkButton.setImage(checkedImage, for: .normal)
-                    itemTitle.textColor = K.Colors.labelTertiary
-                } else {
-                    checkButton.setImage(uncheckedImage, for: .normal)
-                    itemTitle.textColor = K.Colors.labelPrimary
-                }
-                
                 if item?.importance == .important {
                     checkButton.setImage(uncheckedRed, for: .normal)
                     let imageAttachment = NSTextAttachment()
                     imageAttachment.image = importantSign
                     let fullString = NSMutableAttributedString(string: "")
                     fullString.append(NSAttributedString(attachment: imageAttachment))
-                    fullString.append(NSAttributedString(string:" \(itemTitle.text!)"))
+                    fullString.append(NSAttributedString(string:" \(item!.text)"))
                     itemTitle.attributedText = fullString
                 }
+                if item!.done {
+                    checkButton.setImage(checkedImage, for: .normal)
+                    let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: item!.text)
+                    attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSRange(location: 0, length: attributeString.length))
+                    itemTitle.attributedText = attributeString
+                    itemTitle.textColor = K.Colors.labelTertiary
+                } else {
+                    if item?.importance != .important {
+                        itemTitle.attributedText = nil
+                        itemTitle.text = item?.text
+                    }
+                    checkButton.setImage(uncheckedImage, for: .normal)
+                    itemTitle.textColor = K.Colors.labelPrimary
+                }
+            }
+            if item?.deadline != nil {
+                let formatter = DateFormatter()
+                formatter.locale = Locale(identifier: "ru_RU")
+                formatter.dateFormat = "dd MMMM"
+                deadlineLabel.attributedText = NSAttributedString(string: formatter.string(from: (item?.deadline)!))
+                calendarImageView.image = UIImage(systemName: "calendar")
             }
         }
      }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        print("INITED")
+//        print("INITED")
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setup()
     }
@@ -59,28 +67,19 @@ final class TodoListCell: UITableViewCell {
         super.init(coder: coder)
     }
     
-    
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        // Configure the view for the selected state
-//    }
-    
-    
     private func setup() {
         [
             checkButton, bodyStackView, chevronButton
         ].forEach{ cellStackView.addArrangedSubview($0) }
         contentView.addSubview(cellStackView)
         selectionStyle = .none
-        print("ADDED")
+//        print("ADDED")
         setConstraints()
+        
     }
     
     private func getCellStackView() -> UIStackView {
         let stack = UIStackView()
-        
-        
         stack.axis = .horizontal
         stack.alignment = .center
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -115,12 +114,13 @@ final class TodoListCell: UITableViewCell {
         label.textColor = .label
         label.font = .systemFont(ofSize: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         return label
     }
     
     private func getDeadlineLabel() -> UILabel {
         let label = UILabel()
-        label.text = "14 июня"
+        label.text = ""
         label.textColor = .tertiaryLabel
         label.font = .systemFont(ofSize: 15)
         return label
@@ -144,7 +144,7 @@ final class TodoListCell: UITableViewCell {
         return button
     }
     
-    @objc func chevronButtonPressed() {
+    @objc func chevronButtonPressed(at index: Int) {
         let vc = TodoListViewController()
         vc.presentItemVC(item)
     }
@@ -174,17 +174,5 @@ final class TodoListCell: UITableViewCell {
                 chevronButton.heightAnchor.constraint(equalToConstant: 24)
             ]
         )
-    }
-}
-
-
-extension String {
-    func strikeThrough() -> NSAttributedString {
-        let attributeString =  NSMutableAttributedString(string: self)
-        attributeString.addAttribute(
-            NSAttributedString.Key.strikethroughStyle,
-               value: NSUnderlineStyle.single.rawValue,
-                   range:NSMakeRange(0,attributeString.length))
-        return attributeString
     }
 }

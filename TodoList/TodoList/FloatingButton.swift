@@ -14,22 +14,19 @@ class FloatingButton: UIButton {
     }
     
     convenience init() {
-        self.init(type: .custom)
+        self.init(type: .system)
         setup()
     }
     
     private func setup() {
-        contentVerticalAlignment = .fill
-        contentHorizontalAlignment = .fill
         setImage(UIImage(named: "addButton"), for: .normal)
+        frame = CGRect(x: 0, y: 0, width: 70, height: 70)
         translatesAutoresizingMaskIntoConstraints = false
         layer.cornerRadius = 42
-        
+        layer.shadowOffset = CGSize(width: 0.0, height: 8.0)
         layer.shadowColor = UIColor.gray.cgColor
-        layer.shadowOffset = .init(width: 0, height: 8)
         layer.shadowRadius = 10
         layer.shadowOpacity = 0.3
-        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
     }
 }
 

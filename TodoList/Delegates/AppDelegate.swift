@@ -8,10 +8,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static func shared() -> AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
+    
+    final class DateFormatterProvider {
+        static var dateFormatter: DateFormatter {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "d MMMM yyyy"
+            dateFormatter.locale = Locale(identifier: "ru")
+            return dateFormatter
+        }
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        fileCache.loadFromFile(fileName: "test1")
+        fileCache.loadFromFile(fileName: "test2")
         
         return true
     }

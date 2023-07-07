@@ -6,6 +6,9 @@ class FileCache {
     var items = [TodoItem]()
     
     func addItem(item: TodoItem) {
+        if self.exists(id: item.id) {
+            self.deleteItem(id: item.id)
+        }
         items.append(item)
     }
     
