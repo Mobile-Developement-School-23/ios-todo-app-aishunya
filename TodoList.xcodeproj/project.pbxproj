@@ -10,6 +10,7 @@
 		BF0037402A4322E500692A50 /* SF-Pro-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = BF00373E2A4322E400692A50 /* SF-Pro-Display-Regular.otf */; };
 		BF0037412A4322E500692A50 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = BF00373F2A4322E500692A50 /* SF-Pro-Text-Regular.otf */; };
 		BF179AC42A537435004A3A0F /* CustomDataTaskExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF179AC32A537435004A3A0F /* CustomDataTaskExtension.swift */; };
+		BF5DDBEC2A58C225004D8040 /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5DDBEB2A58C225004D8040 /* URLSession.swift */; };
 		BF67E6F42A44435C00AB2F63 /* ItemDeadlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF67E6F32A44435C00AB2F63 /* ItemDeadlineView.swift */; };
 		BF67E6F62A44444700AB2F63 /* ItemImportanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF67E6F52A44444700AB2F63 /* ItemImportanceView.swift */; };
 		BF67E6F92A444AB300AB2F63 /* ItemSeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF67E6F82A444AB300AB2F63 /* ItemSeparatorView.swift */; };
@@ -58,6 +59,7 @@
 		BF00373E2A4322E400692A50 /* SF-Pro-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Regular.otf"; sourceTree = "<group>"; };
 		BF00373F2A4322E500692A50 /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; };
 		BF179AC32A537435004A3A0F /* CustomDataTaskExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDataTaskExtension.swift; sourceTree = "<group>"; };
+		BF5DDBEB2A58C225004D8040 /* URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSession.swift; sourceTree = "<group>"; };
 		BF67E6F32A44435C00AB2F63 /* ItemDeadlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDeadlineView.swift; sourceTree = "<group>"; };
 		BF67E6F52A44444700AB2F63 /* ItemImportanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemImportanceView.swift; sourceTree = "<group>"; };
 		BF67E6F82A444AB300AB2F63 /* ItemSeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSeparatorView.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 			children = (
 				BFC489542A38A3EE00E6B0FC /* FileCache.swift */,
 				BF179AC32A537435004A3A0F /* CustomDataTaskExtension.swift */,
+				BF5DDBEB2A58C225004D8040 /* URLSession.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -374,6 +377,7 @@
 			files = (
 				BF67E6FD2A446D9900AB2F63 /* ItemScrollView.swift in Sources */,
 				BFDB00EA2A4E401900500C93 /* FloatingButton.swift in Sources */,
+				BF5DDBEC2A58C225004D8040 /* URLSession.swift in Sources */,
 				BFC489132A33C92200E6B0FC /* ItemViewController.swift in Sources */,
 				BFC4890F2A33C92200E6B0FC /* AppDelegate.swift in Sources */,
 				BFC4893F2A33C9BE00E6B0FC /* TodoItem.swift in Sources */,
