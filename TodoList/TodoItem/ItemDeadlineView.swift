@@ -6,15 +6,16 @@ final class ItemDeadlineView: UIStackView {
     
     private lazy var deadlineLabel = getDeadlineLabel()
     private lazy var switchControl = getSwitchContol()
+    private lazy var dateButton: UIButton = getDateButton()
     
     var delegate: ItemViewController?
     var deadline: Date? {
         didSet {
-            guard let deadline else {
-                return
-            }
-            
-            deadlineLabel.text = dateFormatter.string(from: deadline)
+            let attributes: [NSAttributedString.Key: Any] = [
+                        .font: UIFont.boldSystemFont(ofSize: 13)
+                    ]
+            let attributedTitle = NSAttributedString(string: deadlineLabelText, attributes: attributes)
+            dateButton.setAttributedTitle(attributedTitle, for: .normal)
         }
     }
     
@@ -31,6 +32,9 @@ final class ItemDeadlineView: UIStackView {
     
     func setSwitchOn() {
         switchControl.setOn(true, animated: true)
+        removeSubviews(from: self)
+        addArrangedSubview(deadlineDateStack)
+        addArrangedSubview(switchControl)
     }
     
     override init(frame: CGRect) {
@@ -76,10 +80,6 @@ final class ItemDeadlineView: UIStackView {
 //MARK: - Including Date Button (Switch On)
 
 extension ItemDeadlineView {
-
-    private var dateButton: UIButton {
-        return getDateButton()
-    }
     
     private var deadlineDateStack: UIStackView {
         return getDeadlineDateStack()
@@ -92,6 +92,7 @@ extension ItemDeadlineView {
                 addArrangedSubview(switchControl)
             } else {
                 removeSubviews(from: self)
+                delegate?.dateButtonPressed(hideCalendar: true)
                 setup()
                 
             }
@@ -99,6 +100,9 @@ extension ItemDeadlineView {
     
     var deadlineLabelText: String {
         let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: .now)!
+        if deadline != nil {
+            return dateToString(date: deadline!)
+        }
         return dateToString(date: tomorrow)
     }
     
@@ -145,7 +149,7 @@ extension ItemDeadlineView {
     }
     
     @objc func dateButtonPressed(){
-        delegate?.dateButtonPressed()
+        delegate?.dateButtonPressed(hideCalendar: false)
     }
 }
 

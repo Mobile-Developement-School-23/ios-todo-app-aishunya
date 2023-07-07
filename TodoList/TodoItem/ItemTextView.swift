@@ -23,6 +23,7 @@ final class ItemTextView: UITextView {
     func setText(newText: String) {
         text = newText
         textColor = K.Colors.labelPrimary
+        onTextChanged?(true)
         
     }
     

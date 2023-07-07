@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BF0037402A4322E500692A50 /* SF-Pro-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = BF00373E2A4322E400692A50 /* SF-Pro-Display-Regular.otf */; };
 		BF0037412A4322E500692A50 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = BF00373F2A4322E500692A50 /* SF-Pro-Text-Regular.otf */; };
+		BF179AC42A537435004A3A0F /* CustomDataTaskExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF179AC32A537435004A3A0F /* CustomDataTaskExtension.swift */; };
 		BF67E6F42A44435C00AB2F63 /* ItemDeadlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF67E6F32A44435C00AB2F63 /* ItemDeadlineView.swift */; };
 		BF67E6F62A44444700AB2F63 /* ItemImportanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF67E6F52A44444700AB2F63 /* ItemImportanceView.swift */; };
 		BF67E6F92A444AB300AB2F63 /* ItemSeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF67E6F82A444AB300AB2F63 /* ItemSeparatorView.swift */; };
@@ -34,11 +35,6 @@
 		BFDB00E72A4E392E00500C93 /* TodoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB00E62A4E392E00500C93 /* TodoListCell.swift */; };
 		BFDB00EA2A4E401900500C93 /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB00E92A4E401900500C93 /* FloatingButton.swift */; };
 		BFDB00EC2A4F273400500C93 /* ContentSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDB00EB2A4F273400500C93 /* ContentSizedTableView.swift */; };
-		BFDB00F32A4FE82500500C93 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = BFDB00F22A4FE82500500C93 /* CocoaLumberjack */; };
-		BFDB00F52A4FE82500500C93 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BFDB00F42A4FE82500500C93 /* CocoaLumberjackSwift */; };
-		BFDB00F72A4FE82500500C93 /* CocoaLumberjackSwiftLogBackend in Frameworks */ = {isa = PBXBuildFile; productRef = BFDB00F62A4FE82500500C93 /* CocoaLumberjackSwiftLogBackend */; };
-		BFDB00FA2A4FE87B00500C93 /* SwiftLintFramework in Frameworks */ = {isa = PBXBuildFile; productRef = BFDB00F92A4FE87B00500C93 /* SwiftLintFramework */; };
-		BFDB00FC2A4FE87B00500C93 /* swiftlint in Frameworks */ = {isa = PBXBuildFile; productRef = BFDB00FB2A4FE87B00500C93 /* swiftlint */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +57,7 @@
 /* Begin PBXFileReference section */
 		BF00373E2A4322E400692A50 /* SF-Pro-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Regular.otf"; sourceTree = "<group>"; };
 		BF00373F2A4322E500692A50 /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; };
+		BF179AC32A537435004A3A0F /* CustomDataTaskExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDataTaskExtension.swift; sourceTree = "<group>"; };
 		BF67E6F32A44435C00AB2F63 /* ItemDeadlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDeadlineView.swift; sourceTree = "<group>"; };
 		BF67E6F52A44444700AB2F63 /* ItemImportanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemImportanceView.swift; sourceTree = "<group>"; };
 		BF67E6F82A444AB300AB2F63 /* ItemSeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSeparatorView.swift; sourceTree = "<group>"; };
@@ -95,11 +92,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFDB00FC2A4FE87B00500C93 /* swiftlint in Frameworks */,
-				BFDB00FA2A4FE87B00500C93 /* SwiftLintFramework in Frameworks */,
-				BFDB00F52A4FE82500500C93 /* CocoaLumberjackSwift in Frameworks */,
-				BFDB00F72A4FE82500500C93 /* CocoaLumberjackSwiftLogBackend in Frameworks */,
-				BFDB00F32A4FE82500500C93 /* CocoaLumberjack in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +112,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BF179AC22A5373F2004A3A0F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				BFC489542A38A3EE00E6B0FC /* FileCache.swift */,
+				BF179AC32A537435004A3A0F /* CustomDataTaskExtension.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		BF67E6F72A44466200AB2F63 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -142,7 +143,6 @@
 			isa = PBXGroup;
 			children = (
 				BFC4893E2A33C9BE00E6B0FC /* TodoItem.swift */,
-				BFC489542A38A3EE00E6B0FC /* FileCache.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -194,6 +194,7 @@
 		BFC4890D2A33C92200E6B0FC /* TodoList */ = {
 			isa = PBXGroup;
 			children = (
+				BF179AC22A5373F2004A3A0F /* Services */,
 				BFA67ABE2A4DCD5300AF4920 /* Delegates */,
 				BFA67ABF2A4DD0A500AF4920 /* Model */,
 				BFB38D092A42F37E0045810F /* Constants.swift */,
@@ -228,8 +229,8 @@
 		BFDB00E82A4E3FB600500C93 /* TodoList */ = {
 			isa = PBXGroup;
 			children = (
-				BFDB00E62A4E392E00500C93 /* TodoListCell.swift */,
 				BFDB00EB2A4F273400500C93 /* ContentSizedTableView.swift */,
+				BFDB00E62A4E392E00500C93 /* TodoListCell.swift */,
 				BFDB00E92A4E401900500C93 /* FloatingButton.swift */,
 			);
 			path = TodoList;
@@ -252,11 +253,6 @@
 			);
 			name = TodoList;
 			packageProductDependencies = (
-				BFDB00F22A4FE82500500C93 /* CocoaLumberjack */,
-				BFDB00F42A4FE82500500C93 /* CocoaLumberjackSwift */,
-				BFDB00F62A4FE82500500C93 /* CocoaLumberjackSwiftLogBackend */,
-				BFDB00F92A4FE87B00500C93 /* SwiftLintFramework */,
-				BFDB00FB2A4FE87B00500C93 /* swiftlint */,
 			);
 			productName = ToDoList;
 			productReference = BFC4890B2A33C92200E6B0FC /* TodoList.app */;
@@ -331,8 +327,6 @@
 			);
 			mainGroup = BFC489022A33C92200E6B0FC;
 			packageReferences = (
-				BFDB00F12A4FE82500500C93 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
-				BFDB00F82A4FE87B00500C93 /* XCRemoteSwiftPackageReference "SwiftLint" */,
 			);
 			productRefGroup = BFC4890C2A33C92200E6B0FC /* Products */;
 			projectDirPath = "";
@@ -386,6 +380,7 @@
 				BFC489552A38A3EE00E6B0FC /* FileCache.swift in Sources */,
 				BF7E9EFF2A4588440081A17E /* ItemCalendarView.swift in Sources */,
 				BF67E6F42A44435C00AB2F63 /* ItemDeadlineView.swift in Sources */,
+				BF179AC42A537435004A3A0F /* CustomDataTaskExtension.swift in Sources */,
 				BF67E7032A4483CA00AB2F63 /* ItemDetailsStackView.swift in Sources */,
 				BF67E6F92A444AB300AB2F63 /* ItemSeparatorView.swift in Sources */,
 				BFDB00E52A4E233400500C93 /* TodoListViewController.swift in Sources */,
@@ -729,53 +724,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		BFDB00F12A4FE82500500C93 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CocoaLumberjack/CocoaLumberjack";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
-			};
-		};
-		BFDB00F82A4FE87B00500C93 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/SwiftLint";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.52.3;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		BFDB00F22A4FE82500500C93 /* CocoaLumberjack */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BFDB00F12A4FE82500500C93 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
-			productName = CocoaLumberjack;
-		};
-		BFDB00F42A4FE82500500C93 /* CocoaLumberjackSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BFDB00F12A4FE82500500C93 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
-			productName = CocoaLumberjackSwift;
-		};
-		BFDB00F62A4FE82500500C93 /* CocoaLumberjackSwiftLogBackend */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BFDB00F12A4FE82500500C93 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
-			productName = CocoaLumberjackSwiftLogBackend;
-		};
-		BFDB00F92A4FE87B00500C93 /* SwiftLintFramework */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BFDB00F82A4FE87B00500C93 /* XCRemoteSwiftPackageReference "SwiftLint" */;
-			productName = SwiftLintFramework;
-		};
-		BFDB00FB2A4FE87B00500C93 /* swiftlint */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BFDB00F82A4FE87B00500C93 /* XCRemoteSwiftPackageReference "SwiftLint" */;
-			productName = swiftlint;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BFC489032A33C92200E6B0FC /* Project object */;
 }

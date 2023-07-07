@@ -57,24 +57,25 @@ class TodoListViewController: UIViewController {
     
     private func getDoneCountLabel() -> UILabel {
         let label = UILabel()
+        label.textColor = K.Colors.labelTertiary
         return label
     }
     
     private func getToggleShowDoneItemsButton() -> UIButton {
         let button = UIButton()
-        button.setTitle("Показать", for: .normal)
+        button.setTitle("Скрыть", for: .normal)
         button.setTitleColor(K.Colors.blue, for: .normal)
         button.addTarget(self, action: #selector(toggleShowAllItems), for: .touchUpInside)
         return button
     }
     
     @objc func toggleShowAllItems() {
+        isShowingAllItems = !isShowingAllItems
         if toggleShowDoneItemsButton.currentTitle == "Показать" {
             toggleShowDoneItemsButton.setTitle("Скрыть", for: .normal)
         } else {
             toggleShowDoneItemsButton.setTitle("Показать", for: .normal)
         }
-        isShowingAllItems = !isShowingAllItems
         itemsChanged()
     }
     
@@ -99,6 +100,16 @@ class TodoListViewController: UIViewController {
         present(presentedVC, animated: true)
     }
     
+    @objc
+    private func presentDetailsVC(at index: Int) {
+        let item = itemsToShow[index]
+        let itemDetailsVC = ItemViewController(item: item)
+        itemDetailsVC.delegate = self
+        let presentedVC = UINavigationController(rootViewController: itemDetailsVC)
+        presentedVC.modalPresentationStyle = .automatic
+        present(presentedVC, animated: true)
+    }
+    
     private func setupTableView() {
         tableView.backgroundColor = K.Colors.backSecondary
         tableView.layer.cornerRadius = 16
@@ -111,7 +122,9 @@ class TodoListViewController: UIViewController {
         let itemVC = ItemViewController()
         itemVC.todoItem = todoItem
         itemVC.delegate = self
-        self.present(itemVC, animated: true)
+        let presentedVC = UINavigationController(rootViewController: itemVC)
+        presentedVC.modalPresentationStyle = .automatic
+        present(presentedVC, animated: true)
     }
     
     private func setConstraints() {
@@ -142,6 +155,49 @@ class TodoListViewController: UIViewController {
         
     }
     
+    private func delete(rowIndexPathAt indexPath: IndexPath) -> UIContextualAction {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) {[weak self] (_, _, completion) in
+            guard let self = self else {return}
+            let item = itemsToShow[indexPath.row]
+            itemsToShow.remove(at: indexPath.row)
+            self.fileCache.deleteItem(id: item.id)
+            self.fileCache.saveToFile(name: "test2")
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            itemsChanged()
+            completion(true)
+        }
+        deleteAction.backgroundColor = K.Colors.red
+        deleteAction.image = UIImage(systemName: "trash")
+        return deleteAction
+    }
+
+    private func edit(rowIndexPathAt indexPath: IndexPath) -> UIContextualAction {
+        let editAction = UIContextualAction(style: .destructive, title: nil) {[weak self] (_, _, completion) in
+            guard let self = self else {return}
+            self.presentDetailsVC(at: indexPath.row)
+            completion(true)
+        }
+        editAction.backgroundColor = K.Colors.grayLight
+        editAction.image = UIImage(systemName: "info.circle.fill")
+        return editAction
+    }
+
+    private func complete(rowIndexPathAt indexPath: IndexPath) -> UIContextualAction {
+        let completeAction = UIContextualAction(style: .destructive, title: nil) {[weak self] (_, _, completion) in
+            guard let self = self else {return}
+            let item = itemsToShow[indexPath.row]
+            itemsToShow.remove(at: indexPath.row)
+            self.fileCache.toggleDone(id: item.id)
+            self.fileCache.saveToFile(name: "test2")
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            itemsChanged()
+            completion(true)
+        }
+        completeAction.backgroundColor = K.Colors.green
+        completeAction.image = UIImage(systemName: "checkmark.circle.fill")
+        return completeAction
+    }
+    
 
 }
 
@@ -167,6 +223,18 @@ extension TodoListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        presentItemVC(itemsToShow[indexPath.row])
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let completeAction = complete(rowIndexPathAt: indexPath)
+        return UISwipeActionsConfiguration(actions: [completeAction])
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = delete(rowIndexPathAt: indexPath)
+        let editAction = edit(rowIndexPathAt: indexPath)
+        return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
     }
 
 }
@@ -174,7 +242,7 @@ extension TodoListViewController: UITableViewDelegate {
 extension TodoListViewController: ItemViewControllerDelegate {
     func itemsChanged() {
         setupItemsToShow()
-        tableView.reloadData()
         setupCompletedItemsCount()
+        tableView.reloadData()
     }
 }

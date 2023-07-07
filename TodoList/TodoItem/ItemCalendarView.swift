@@ -6,6 +6,8 @@ final class ItemCalendarView: UICalendarView, UICalendarViewDelegate {
     
     private var deadline: Date?
     
+    var setDeadline: ((Date) -> ())?
+    
     var dateLabel: UILabel?
     
     override init(frame: CGRect) {
@@ -51,5 +53,6 @@ extension ItemCalendarView: UICalendarSelectionSingleDateDelegate {
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
         deadline = dateComponents?.date
         dateLabel?.text = dateToString(date: deadline!)
+        setDeadline!(deadline!)
     }
 }

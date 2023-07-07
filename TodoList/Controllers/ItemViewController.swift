@@ -19,7 +19,17 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
     private var fileCache = AppDelegate.shared().fileCache
     
     var todoItem: TodoItem?
+    var deadline: Date?
     weak var delegate: ItemViewControllerDelegate?
+    
+    init(item: TodoItem? = nil) {
+        self.todoItem = item
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        nil
+    }
     
 
     override func loadView() {
@@ -29,6 +39,7 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
         calendarView.isHidden = true
         calendarSeparator.isHidden = true
         view.addSubview(scrollView)
+        calendarView.setDeadline = setDeadline
         
         scrollView.addToStackView(textView)
         scrollView.addToStackView(detailsStack)
@@ -47,6 +58,17 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
         textView.subscribeTextChanged { isEnabled in
             self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = isEnabled
                 }
+        
+        if todoItem != nil {
+            let item = todoItem!
+            textView.setText(newText: item.text)
+            importanceView.setImportance(newImportance: item.importance)
+            if item.deadline != nil {
+                let deadline = item.deadline!
+                deadlineView.setSwitchOn()
+                deadlineView.deadline = deadline
+            }
+        }
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:UIResponder.keyboardWillHideNotification, object: nil)
@@ -92,30 +114,35 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
         print("Delete")
         if todoItem != nil {
             fileCache.deleteItem(id: todoItem!.id)
-            fileCache.saveToFile(name: "test1")
+            fileCache.saveToFile(name: "test2")
         }
     }
     
     func saveItem() {
         let text = textView.getText()
         let importance = importanceView.getImportance()
-        var deadline: Date? = nil
-        if deadlineView.isSwitchOn() {
-            deadline = calendarView.getDeadlineDate()
+        
+        var todoItem = TodoItem(text: text, importance: importance, deadline: deadline, done: false, creationDate: Date(), changedDate: Date())
+        
+        if self.todoItem != nil {
+            todoItem.id = self.todoItem!.id
         }
         
-        let todoItem = TodoItem(text: text, importance: importance, deadline: deadline, done: false, creationDate: Date(), changedDate: Date())
-        
         fileCache.addItem(item: todoItem)
-        fileCache.saveToFile(name: "test1")
+        fileCache.saveToFile(name: "test2")
         print(fileCache.items)
         delegate?.itemsChanged()
         dismiss(animated: true)
     }
     
-    @objc func dateButtonPressed() {
+    func setDeadline(deadline: Date) {
+        self.deadline = deadline
+        deadlineView.deadline = deadline
+    }
+    
+    @objc func dateButtonPressed(hideCalendar: Bool) {
         
-        if calendarView.isHidden == true {
+        if calendarView.isHidden == true && !hideCalendar {
             calendarView.isHidden = false
             calendarSeparator.isHidden = false
         } else {
