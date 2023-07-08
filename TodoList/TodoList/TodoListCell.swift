@@ -5,7 +5,7 @@ import UIKit
 
 final class TodoListCell: UITableViewCell {
     
-    var fileCache = AppDelegate.shared().fileCache
+    var networkModel = AppDelegate.shared().networkModel
     var onToggleItemDone: (() -> ())?
     private lazy var checkButton = getCheckButton()
     private lazy var itemTitle = getItemTitle()
@@ -98,7 +98,7 @@ final class TodoListCell: UITableViewCell {
     }
     
     @objc func checkButtonTapped() {
-        fileCache.toggleDone(id: item!.id)
+        networkModel.toggleDone(id: item!.id, done: !item!.done, completion: nil, failure: nil)
         onToggleItemDone!()
     }
     

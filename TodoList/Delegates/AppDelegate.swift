@@ -2,8 +2,8 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    let fileCache = FileCache()
+    
+    let networkModel = NetworkModel()
     
     static func shared() -> AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        fileCache.loadFromFile(fileName: "test2")
+        networkModel.loadData(completion: nil, failure: nil)
         
         return true
     }
