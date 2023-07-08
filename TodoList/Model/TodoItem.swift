@@ -1,5 +1,6 @@
 
 import Foundation
+import UIKit
 
 struct TodoItem{
     
@@ -10,8 +11,9 @@ struct TodoItem{
     var done: Bool
     let creationDate: Date
     let changedDate: Date?
+    let lastUpdatedBy: String?
     
-    init(text: String, id: String = UUID().uuidString, importance: Importance, deadline: Date? = nil, done: Bool, creationDate: Date = Date(), changedDate: Date? = nil) {
+    init(text: String, id: String = UUID().uuidString, importance: Importance, deadline: Date? = nil, done: Bool, creationDate: Date = Date(), changedDate: Date? = nil, lastUpdatedBy: String = UIDevice.current.identifierForVendor?.uuidString ?? "") {
         self.text = text
         self.id = id
         self.importance = importance
@@ -19,6 +21,7 @@ struct TodoItem{
         self.done = done
         self.creationDate = creationDate
         self.changedDate = changedDate
+        self.lastUpdatedBy = lastUpdatedBy
     }
 }
 

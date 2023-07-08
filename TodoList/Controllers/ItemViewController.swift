@@ -3,6 +3,8 @@ import UIKit
 
 protocol ItemViewControllerDelegate: AnyObject {
     func itemsChanged()
+    func removeItem(id: String)
+    func addItem(item: TodoItem)
 }
 
 final class ItemViewController: UIViewController, UICalendarViewDelegate, UITextViewDelegate {
@@ -16,7 +18,6 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
     private var detailsStack = ItemDetailsStackView()
     private var calendarView = ItemCalendarView()
     private var calendarSeparator = ItemSeparatorView()
-    private var fileCache = AppDelegate.shared().fileCache
     
     var todoItem: TodoItem?
     var deadline: Date?
@@ -113,8 +114,7 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
     @objc func deleteButtonTapped() {
         print("Delete")
         if todoItem != nil {
-            fileCache.deleteItem(id: todoItem!.id)
-            fileCache.saveToFile(name: "test2")
+            delegate?.removeItem(id: todoItem!.id)
         }
     }
     
@@ -128,10 +128,7 @@ final class ItemViewController: UIViewController, UICalendarViewDelegate, UIText
             todoItem.id = self.todoItem!.id
         }
         
-        fileCache.addItem(item: todoItem)
-        fileCache.saveToFile(name: "test2")
-        print(fileCache.items)
-        delegate?.itemsChanged()
+        delegate?.addItem(item: todoItem)
         dismiss(animated: true)
     }
     

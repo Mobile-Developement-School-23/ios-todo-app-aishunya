@@ -8,7 +8,7 @@ class TodoListViewController: UIViewController {
     private let floatingButton = FloatingButton()
     private let tableView = ContentSizedTableView()
     private var items = [TodoItem]()
-    private var fileCache = AppDelegate.shared().fileCache
+    private var networkModel = AppDelegate.shared().networkModel
     private lazy var doneCountLabel = getDoneCountLabel()
     private lazy var toggleShowDoneItemsButton = getToggleShowDoneItemsButton()
     private lazy var headerStack = getHeaderStack()
@@ -18,14 +18,14 @@ class TodoListViewController: UIViewController {
     
     private func setupItemsToShow() {
         if isShowingAllItems {
-            itemsToShow = fileCache.items
+            itemsToShow = networkModel.getData()
         } else {
-            itemsToShow = fileCache.items.filter{ $0.done == false}
+            itemsToShow = networkModel.getData().filter{ $0.done == false}
         }
     }
     
     private func setupCompletedItemsCount() {
-        let completed = fileCache.items.filter { $0.done == true }.count
+        let completed = networkModel.getData().filter { $0.done == true }.count
         completedItemsCount = completed
         doneCountLabel.text = "Выполнено – \(completedItemsCount)"
     }
@@ -47,12 +47,21 @@ class TodoListViewController: UIViewController {
         view.bringSubviewToFront(floatingButton)
         setConstraints()
         
+        
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupItemsToShow()
-        setupCompletedItemsCount()
+        
+        networkModel.loadData {
+            DispatchQueue.main.async {
+                self.itemsChanged()
+            }
+        } failure: { _ in
+            DispatchQueue.main.async {
+                self.itemsChanged()
+            }
+        }
     }
     
     private func getDoneCountLabel() -> UILabel {
@@ -160,9 +169,8 @@ class TodoListViewController: UIViewController {
             guard let self = self else {return}
             let item = itemsToShow[indexPath.row]
             itemsToShow.remove(at: indexPath.row)
-            self.fileCache.deleteItem(id: item.id)
-            self.fileCache.saveToFile(name: "test2")
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            removeItem(id: item.id)
             itemsChanged()
             completion(true)
         }
@@ -187,8 +195,7 @@ class TodoListViewController: UIViewController {
             guard let self = self else {return}
             let item = itemsToShow[indexPath.row]
             itemsToShow.remove(at: indexPath.row)
-            self.fileCache.toggleDone(id: item.id)
-            self.fileCache.saveToFile(name: "test2")
+            networkModel.toggleDone(id: item.id, done: !item.done, completion: nil, failure: nil)
             tableView.deleteRows(at: [indexPath], with: .automatic)
             itemsChanged()
             completion(true)
@@ -207,7 +214,6 @@ class TodoListViewController: UIViewController {
 extension TodoListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(fileCache.items)
         return itemsToShow.count
     }
     
@@ -241,8 +247,20 @@ extension TodoListViewController: UITableViewDelegate {
 
 extension TodoListViewController: ItemViewControllerDelegate {
     func itemsChanged() {
-        setupItemsToShow()
-        setupCompletedItemsCount()
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.setupItemsToShow()
+            self.setupCompletedItemsCount()
+            self.tableView.reloadData()
+        }
+    }
+    
+    func removeItem(id: String) {
+        networkModel.removeTask(id: id, completion: nil, failure: nil)
+        itemsChanged()
+    }
+    
+    func addItem(item: TodoItem) {
+        networkModel.addOrReplaceTask(item, completion: nil, failure: nil)
+        itemsChanged()
     }
 }
